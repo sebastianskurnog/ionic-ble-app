@@ -1,0 +1,101 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Example BLE app</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+
+  <div *ngIf="storageDevices.length > 0; else noDevicesInStorage">
+
+    <div *ngIf="availableDevices.length > 0">
+      <h4>Available devices</h4>
+
+      <ion-card *ngFor="let device of availableDevices;">
+        <ion-card-header>
+
+          <ion-icon ios="ios-switch" md="md-switch" *ngIf="device.type === 'switch'"></ion-icon>
+          <ion-icon name="menu" *ngIf="device.type === 'shutter'"></ion-icon>
+
+          <ion-icon color="light" name="bluetooth"></ion-icon>
+          <a style="color: black" (click)="editDevice(device.mac)">{{device.name}}</a>
+        </ion-card-header>
+
+
+
+        <ion-card-content *ngIf="device.type === 'switch'">
+          <ion-item>
+            <ion-label> {{device.channel1name}}</ion-label>
+            <ion-toggle color="secondary"  [(ngModel)]="device.channel1" (ionChange)="onPowerSwitchChange($event, device.channel1, device.channel2, device.mac)"></ion-toggle>
+          </ion-item>
+          <hr>
+          <ion-item>
+            <ion-label> {{device.channel2name}}</ion-label>
+            <ion-toggle color="secondary"  [(ngModel)]="device.channel2" (ionChange)="onPowerSwitchChange($event, device.channel1, device.channel2, device.mac)"></ion-toggle>
+          </ion-item>
+
+        </ion-card-content>
+
+        <ion-card-content *ngIf="device.type === 'shutter'">
+          <ion-item>
+            <button *ngIf="shuttersWorking[device.mac] !== true && device.shutter_status === 2" ion-button icon-start (click)="onShutterChange(device.mac, 1)">
+              <ion-icon name="arrow-up"></ion-icon>
+              Up
+            </button>
+
+            <button *ngIf="shuttersWorking[device.mac] !== true && device.shutter_status === 1" ion-button icon-start (click)="onShutterChange(device.mac, 2)">
+              <ion-icon name="arrow-down"></ion-icon>
+              Down
+            </button>
+
+            <div *ngIf="shuttersWorking[device.mac] === true">
+            <ion-spinner></ion-spinner>
+            </div>
+
+          </ion-item>
+
+
+
+        </ion-card-content>
+
+      </ion-card>
+
+    </div>
+
+    <div *ngIf="notAvailableDevices.length > 0">
+      <br>
+    <h4>Not available devices</h4>
+      <ion-card *ngFor="let device of notAvailableDevices;">
+        <ion-card-header color="light">
+          <ion-icon  name="sunny"></ion-icon>
+          <ion-icon name="bluetooth"></ion-icon>
+          <a style="color: dimgrey" (click)="editDevice(device.mac)">{{device.name}}</a><br>
+          {{device.mac}}
+        </ion-card-header>
+
+
+      </ion-card>
+    </div>
+
+  </div>
+
+  <ng-template #noDevicesInStorage>
+    <ion-card>
+      <ion-card-header>
+     You don't have any devices
+      </ion-card-header>
+      <ion-card-content>
+        <a (click)="goToAddDevicePage()">+ Add device</a>
+      </ion-card-content>
+    </ion-card>
+  </ng-template>
+
+  <ion-fab top right edge>
+    <button ion-fab color="light" (click)="refresh()"><ion-icon name="refresh"></ion-icon></button>
+  </ion-fab>
+
+</ion-content>

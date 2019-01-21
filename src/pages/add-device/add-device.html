@@ -1,0 +1,57 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>New device</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+
+  <div *ngIf="storageReady === true;">
+
+  <div *ngIf="isAny === false; else foundDevice">
+
+    <hr>
+    Activate device - click button on your device.
+    <br>
+    <br>
+    <ion-buttons end>
+      <button ion-button (click)="scanForBleDevice()">
+        Find device
+      </button>
+      <hr>
+    </ion-buttons>
+  </div>
+
+  <ng-template #foundDevice>
+    <ion-list>
+      <ion-item>
+        <h1>Founded device:</h1><br>
+        <h2>{{deviceFromBLE.name}}</h2>
+        <p>MAC: {{deviceFromBLE.mac}}</p>
+        <p>Typ: {{type}} </p>
+        <!--<p>Mac var:<br>{{mac}} </p>-->
+
+      </ion-item>
+    </ion-list>
+
+    <hr>
+
+      <button ion-button color="light" block (click)="scanForBleDevice()">
+        Search again
+      </button>
+
+    <hr>
+
+      <ion-label color="primary" stacked>Enter name (ex. light in room 1)</ion-label>
+      <ion-input [(ngModel)]="deviceFromBLE.name" placeholder="Nazwa urządzenia"></ion-input>
+      <br>
+      <button ion-button block (click)="saveDeviceToStorage()"> Save device</button>
+
+  </ng-template>
+
+  </div>
+
+</ion-content>

@@ -1,0 +1,33 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Device details</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <ion-item>
+    <ion-label fixed>Name</ion-label>
+    <ion-input type="text" [(ngModel)]="name" value="{{name}}"></ion-input>
+  </ion-item>
+
+  <ion-item *ngIf="type === 'switch'">
+    <ion-label fixed>Name channel 1</ion-label>
+    <ion-input type="text" [(ngModel)]="channel1name" value="{{channel1name}}"></ion-input>
+  </ion-item>
+
+  <ion-item *ngIf="type === 'switch'">
+    <ion-label fixed>Name channel 2</ion-label>
+    <ion-input type="text" [(ngModel)]="channel2name" value="{{channel2name}}"></ion-input>
+  </ion-item>
+
+  <div padding>
+    <button ion-button color="primary" block (click)="updateDeviceData()">Save</button>
+  </div>
+
+  <div padding>
+    <button ion-button color="danger" block (click)="deleteDevice(mac)">Delete device</button>
+  </div>
+
+</ion-content>
